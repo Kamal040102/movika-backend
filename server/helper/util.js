@@ -33,3 +33,15 @@ exports.genJWT = (payload, key) => {
         return err.message
     }
 }
+
+exports.genJWTForgetPassword = (payload, key) => {
+    try{
+        const token = jwt.sign(payload, key, {
+            expiresIn:"10m"
+        })
+        return token
+    }
+    catch(err){
+        return err.message
+    }
+}

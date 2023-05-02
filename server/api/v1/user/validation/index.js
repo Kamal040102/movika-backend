@@ -17,3 +17,9 @@ exports.signup = {
         dob:Joi.string()
     })
 }
+
+exports.forgetPassword = {
+    body: Joi.object().keys({
+        email:Joi.string().required().email()
+    })
+}

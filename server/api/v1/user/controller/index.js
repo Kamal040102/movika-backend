@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const User = require("../model/index")
-const util = require("../../../../helper/util")
+const util = require("../../../../helper/util");
+const { sendMailOnSignup } = require("../../../../helper/mailer");
 
 exports.signin = expressAsyncHandler(async (req, res) => {
     const data = req.body;
@@ -55,6 +56,7 @@ exports.signup = expressAsyncHandler(async (req, res) => {
             const newUser = await User.create(data)
 
             if (newUser) {
+                sendMailOnSignup(data.email)
                 res.status(201).json({
                     responseCode: 1,
                     responseMessage: "User signup success."
@@ -69,3 +71,32 @@ exports.signup = expressAsyncHandler(async (req, res) => {
         })
     }
 })
+
+exports.forgetPassword = expressAsyncHandler(async (req, res) => {
+    const data = req.body;
+   try{
+    const userExist=await User.findOne({email:data.email});
+    if(userExist){
+        const url = `http://localhost:3000/forgetPassword/${util.genJWTForgetPassword({_id:userExist._id}, process.env.JWT_SECRET)}`
+        res.json({
+            responseCode: 1,
+            responseMessage: "Forget Password Unique Link",
+            responseData: url
+        })
+    }
+    else{
+        res.status(404).json({
+            responseCode: 0,
+            responseMessage: "User Not Found",
+        })
+    }
+
+   }
+    catch (err) {
+        res.status(500).json({
+            responseCode: 0,
+            responseMessage: err.message
+        })
+    }
+})
+
