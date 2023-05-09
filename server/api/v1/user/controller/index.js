@@ -74,26 +74,26 @@ exports.signup = expressAsyncHandler(async (req, res) => {
 
 exports.forgetPassword = expressAsyncHandler(async (req, res) => {
     const data = req.body;
-   try{
-    const userExist=await User.findOne({email:data.email});
-    if(userExist){
-        const url = `http://localhost:3000/resetPassword/${util.genJWTForgetPassword({_id:userExist._id}, process.env.JWT_SECRET)}`
+    try {
+        const userExist = await User.findOne({ email: data.email });
+        if (userExist) {
+            const url = `http://localhost:3000/resetPassword/${util.genJWTForgetPassword({ _id: userExist._id }, process.env.JWT_SECRET)}`
 
-        sendMailOnForgetPassword(data.email, url)
+            sendMailOnForgetPassword(data.email, url)
 
-        res.json({
-            responseCode: 1,
-            responseMessage: "Forget Password mail has been sent successfully"
-        })
+            res.json({
+                responseCode: 1,
+                responseMessage: "Forget Password mail has been sent successfully"
+            })
+        }
+        else {
+            res.status(404).json({
+                responseCode: 0,
+                responseMessage: "User Not Found",
+            })
+        }
+
     }
-    else{
-        res.status(404).json({
-            responseCode: 0,
-            responseMessage: "User Not Found",
-        })
-    }
-
-   }
     catch (err) {
         res.status(500).json({
             responseCode: 0,
@@ -102,25 +102,25 @@ exports.forgetPassword = expressAsyncHandler(async (req, res) => {
     }
 })
 
-exports.resetPassword = expressAsyncHandler(async (req,res) => {
-    const {resettoken} = req.headers;
-    const {password, confirmPassword} = req.body;
+exports.resetPassword = expressAsyncHandler(async (req, res) => {
+    const { resettoken } = req.headers;
+    const { password, confirmPassword } = req.body;
 
     console.log(req.headers);
 
-    try{
-        if(!resettoken){
+    try {
+        if (!resettoken) {
             res.status(401).json({
                 responseCode: 0,
                 responseMessage: "User is unauthorized"
             })
-        }else{
-            if(password !== confirmPassword){
+        } else {
+            if (password !== confirmPassword) {
                 res.status(407).json({
                     responseCode: 0,
                     responseMessage: "Password and Confirm Password should match."
                 })
-            }else{
+            } else {
                 const userData = util.verifyJwt(resettoken, process.env.JWT_SECRET)
 
                 const userExist = await User.findByIdAndUpdate(userData._id, {
@@ -129,12 +129,12 @@ exports.resetPassword = expressAsyncHandler(async (req,res) => {
 
                 res.json({
                     responseCode: 0,
-            responseMessage: "Password Changed Successfully."
+                    responseMessage: "Password Changed Successfully."
                 })
             }
         }
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
             responseCode: 0,
             responseMessage: err.message
@@ -142,20 +142,20 @@ exports.resetPassword = expressAsyncHandler(async (req,res) => {
     }
 })
 
-exports.updateUser = expressAsyncHandler(async (req,res) => {
+exports.updateUser = expressAsyncHandler(async (req, res) => {
     const data = req.body;
-    try{    
-        const user = await User.findByIdAndUpdate(req.params.id, data, {new:true})
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, data, { new: true })
 
-        if(user){
-            res.json({responseCode:1, responseMessage:"User details updated.", responseData:user})
-        }else{
+        if (user) {
+            res.json({ responseCode: 1, responseMessage: "User details updated.", responseData: user })
+        } else {
             res.status(404).json({
-                responseCode:0, responseMessage:"User not found."
+                responseCode: 0, responseMessage: "User not found."
             })
         }
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
             responseCode: 0,
             responseMessage: err.message
@@ -163,21 +163,21 @@ exports.updateUser = expressAsyncHandler(async (req,res) => {
     }
 })
 
-exports.index = expressAsyncHandler(async (req,res) => {
-    try{
-        const user = await User.findById(req.params.id);
+exports.index = expressAsyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).populate("favourites");
 
-        if(user){
-            res.json({responseCode:1, responseMessage:"User details listed.", responseData:user})
-        }else{
+        if (user) {
+            res.json({ responseCode: 1, responseMessage: "User details listed.", responseData: user })
+        } else {
             res.status(404).json({
-                responseCode:0, responseMessage:"User not found."
+                responseCode: 0, responseMessage: "User not found."
             })
         }
-    }catch(err){
+    } catch (err) {
         res.status(500).json({
-            responseCode:0,
-            responseMessage:err.message
+            responseCode: 0,
+            responseMessage: err.message
         })
     }
 })

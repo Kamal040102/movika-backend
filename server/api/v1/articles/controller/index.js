@@ -57,11 +57,14 @@ exports.index = expressAsyncHandler(async (req, res) => {
     const { id } = req.params;
     try {
         const article = await Article.findById(id);
+        const user = await User.findOne({ articles: id })
+
+        console.log(user)
 
         res.status(201).json({
             responseCode: 0,
             responseMessage: "Listed Article",
-            responseData: article
+            responseData: { article, user }
         })
     }
     catch (err) {
@@ -72,11 +75,11 @@ exports.index = expressAsyncHandler(async (req, res) => {
     }
 })
 
-exports.indexAll = expressAsyncHandler(async (req,res) => {
-    const {category} = req.query;
+exports.indexAll = expressAsyncHandler(async (req, res) => {
+    const { category } = req.query;
 
-    try{
-        const articles = await Article.find(category ? {category} : null)
+    try {
+        const articles = await Article.find(category ? { category } : null)
         console.log(articles)
         res.json({
             responseCode: 1,
@@ -84,7 +87,7 @@ exports.indexAll = expressAsyncHandler(async (req,res) => {
             responseMessage: "Listed all articles"
         })
     }
-    catch(err){
+    catch (err) {
         res.status(500).json({
             responseCode: 0,
             responseMessage: err.message
