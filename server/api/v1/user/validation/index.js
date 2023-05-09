@@ -23,3 +23,21 @@ exports.forgetPassword = {
         email:Joi.string().required().email()
     })
 }
+
+exports.resetPassword = {
+    body: Joi.object().keys({
+        password: Joi.string().required().min(8),
+        confirmPassword: Joi.string().required().min(8)
+    })
+}
+
+exports.update = {
+    body: Joi.object().keys({
+        email: Joi.string(),
+        name: Joi.string(),
+        password: Joi.string(),
+        phone: Joi.number(),
+        dob:Joi.string(),
+        favourites: Joi.array()
+    })
+}

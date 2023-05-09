@@ -26,4 +26,21 @@ exports.sendMailOnSignup = (to) => {
     })
 }
 
+exports.sendMailOnForgetPassword = (to, url) => {
+    const mailOption = {
+        from:process.env.EMAIL,
+        to:to,
+        subject:"Forget Password Link.",
+        html:`<button><a href=${url}>Reset Password</a></button>`
+    }
+
+    transporter.sendMail(mailOption, (err, info) => {
+        if(err){
+            return err
+        }else{
+            return "Mail send successfully."
+        }
+    })
+}
+
 

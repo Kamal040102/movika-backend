@@ -5,7 +5,7 @@ exports.create = {
         heading: Joi.string().required(),
         description: Joi.string().required(),
         imgUrl: Joi.string(),
-        category: Joi.string().valid('Business', 'Sports', 'Technology', 'Science', 'Entertainment', 'Health')
+        category: Joi.string().valid('Business', 'Sports', 'Technology', 'Science', 'Entertainment', 'Health', 'General')
     })
 }
 
@@ -14,6 +14,6 @@ exports.update = {
         heading: Joi.string(),
         description: Joi.string(),
         imgUrl: Joi.string(),
-        category: Joi.string().valid('Business', 'Sports', 'Technology', 'Science', 'Entertainment', 'Health')
+        category: Joi.string().valid('Business', 'Sports', 'Technology', 'Science', 'Entertainment', 'Health', 'General')
     })
 }

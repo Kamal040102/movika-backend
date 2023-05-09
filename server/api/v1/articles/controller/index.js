@@ -72,17 +72,25 @@ exports.index = expressAsyncHandler(async (req, res) => {
     }
 })
 
-// exports.indexAll = expressAsyncHandler(async (req,res) => {
-//     try{
-//         const articles = await Article.find()
-//     }
-//     catch(err){
-//         res.status(500).json({
-//             responseCode: 0,
-//             responseMessage: err.message
-//         })
-//     }
-// })
+exports.indexAll = expressAsyncHandler(async (req,res) => {
+    const {category} = req.query;
+
+    try{
+        const articles = await Article.find(category ? {category} : null)
+        console.log(articles)
+        res.json({
+            responseCode: 1,
+            responseData: articles,
+            responseMessage: "Listed all articles"
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            responseCode: 0,
+            responseMessage: err.message
+        })
+    }
+})
 
 exports.delete = expressAsyncHandler(async (req, res) => {
     const { id } = req.params;

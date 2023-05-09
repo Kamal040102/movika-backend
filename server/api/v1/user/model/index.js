@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true, min: 8 },
     phone: { type: Number },
     dob:{type:String},
-    articles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }]
+    articles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
+    favourites:[{type:mongoose.Schema.Types.ObjectId, ref:"Article", default:[]}]
 })
 
 const User = mongoose.model("User", userSchema)

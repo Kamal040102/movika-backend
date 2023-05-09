@@ -45,3 +45,14 @@ exports.genJWTForgetPassword = (payload, key) => {
         return err.message
     }
 }
+
+exports.verifyJwt = (token, key) => {
+    try{
+        const data = jwt.verify(token, key)
+
+        return data;
+    }
+    catch(err){
+        return err.message
+    }
+}
