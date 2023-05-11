@@ -5,9 +5,10 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     password: { type: String, required: true, min: 8 },
     phone: { type: Number },
-    dob:{type:String},
+    dob: { type: String },
     articles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
-    favourites:[{type:mongoose.Schema.Types.ObjectId, ref:"Article", default:[]}]
+    favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article", default: [] }],
+    role: { type: String, enum: ["admin", "user"], default: "user" }
 })
 
 const User = mongoose.model("User", userSchema)

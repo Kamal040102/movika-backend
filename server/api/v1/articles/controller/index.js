@@ -78,9 +78,16 @@ exports.index = expressAsyncHandler(async (req, res) => {
 exports.indexAll = expressAsyncHandler(async (req, res) => {
     const { category } = req.query;
 
+    let options = {
+        published: true
+    }
+
+    if (category) {
+        options.category = category;
+    }
+
     try {
-        const articles = await Article.find(category ? { category } : null)
-        console.log(articles)
+        const articles = await Article.find(options)
         res.json({
             responseCode: 1,
             responseData: articles,
