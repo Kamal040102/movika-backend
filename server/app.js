@@ -5,6 +5,7 @@ const articleRouter = require("./api/v1/articles/route");
 require("./config/database/connection")
 const cors = require("cors");
 const adminRoute = require("./api/v1/admin/routes");
+const userArticleRouter = require("./api/v1/userArticles/routes");
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.get("/", (req, res) => {
 app.use("/v1/users", userRouter)
 app.use("/v1/articles", articleRouter)
 app.use("/v1/admin", adminRoute)
+app.use("/v1/userArticle", userArticleRouter)
 
 module.exports = app;
