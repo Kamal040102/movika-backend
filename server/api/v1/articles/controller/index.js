@@ -7,10 +7,9 @@ exports.create = expressAsyncHandler(async (req, res) => {
     const data = req.body;
     try {
         const newArticle = await Article.create(data)
-
-        const arr = [newArticle._id]
-
-        const updateUser = await User.findByIdAndUpdate(req.id, { articles: arr })
+        const user = await User.findById(req.id)
+        const articleArr = user.articles;
+        const updateUser = await User.findByIdAndUpdate(req.id, { articles: [...articleArr, newArticle._id] }, { new: true })
         console.log(req.id)
         console.log(updateUser)
 
@@ -59,8 +58,6 @@ exports.index = expressAsyncHandler(async (req, res) => {
         const article = await Article.findById(id);
         const user = await User.findOne({ articles: id })
 
-        console.log(user)
-
         res.status(201).json({
             responseCode: 0,
             responseMessage: "Listed Article",
@@ -76,7 +73,7 @@ exports.index = expressAsyncHandler(async (req, res) => {
 })
 
 exports.indexAll = expressAsyncHandler(async (req, res) => {
-    const { category } = req.query;
+    const { category, title } = req.query;
 
     let options = {
         published: true
@@ -84,6 +81,10 @@ exports.indexAll = expressAsyncHandler(async (req, res) => {
 
     if (category) {
         options.category = category;
+    }
+
+    if (title) {
+        options.title = title
     }
 
     try {
