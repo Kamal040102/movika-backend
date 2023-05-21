@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start_local": "env-cmd -f ./server/config/env/.env.local nodemon --inspect index.js",
-    "start_dev": "env-cmd -f ./server/config/env/.env.dev nodemon --inspect index.js"
+    "start_local": "env-cmd -f ./config/env/.env.local nodemon --inspect index.js",
+    "start_live": "env-cmd -f ./config/env/.env.live node --inspect index.js"
   },
   "keywords": [],
   "author": "",

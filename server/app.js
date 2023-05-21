@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const userRouter = require("./api/v1/user/route");
 const articleRouter = require("./api/v1/articles/route");
-require("./config/database/connection")
+require("../config/database/connection")
 const cors = require("cors");
 const adminRoute = require("./api/v1/admin/routes");
 const userArticleRouter = require("./api/v1/userArticles/routes");
